@@ -5,7 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Le Ha Quang/scene/UI scene.unity
+    guid: e27ca7e86b5d2274b94af5af2961d881
+  - enabled: 1
+    path: Assets/Le Ha Quang/scene/Map scene.unity
+    guid: 670bd996c1d85864b8189521dc415b89
   m_configObjects: {}
