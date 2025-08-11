@@ -100,12 +100,12 @@ TextureImporter:
       name: char_tiffi_scorenament_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 116
-        width: 16
-        height: 12
+        x: 1
+        y: 118
+        width: 5
+        height: 9
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -121,12 +121,12 @@ TextureImporter:
       name: char_tiffi_scorenament_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 95
-        width: 18
-        height: 19
+        x: 1
+        y: 93
+        width: 19
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -142,12 +142,12 @@ TextureImporter:
       name: char_tiffi_scorenament_3
       rect:
         serializedVersion: 2
-        x: 0
+        x: 20
         y: 70
-        width: 16
-        height: 19
+        width: 9
+        height: 9
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,43 +160,43 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: char_tiffi_scorenament_5
+      name: char_tiffi_scorenament_2
       rect:
         serializedVersion: 2
-        x: 21
-        y: 69
-        width: 9
-        height: 9
+        x: 1
+        y: 68
+        width: 15
+        height: 23
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 45ad9093c78ca6745967bd9482bac2c6
-      internalID: -1544032191
+      spriteID: 0eac4769730c5bd4e8a403f16cc06f64
+      internalID: 1780425803
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: char_tiffi_scorenament_13
+      name: char_tiffi_scorenament_4
       rect:
         serializedVersion: 2
-        x: 3
-        y: 3
-        width: 51
-        height: 60
+        x: 1
+        y: 1
+        width: 53
+        height: 63
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9eb1424e693976b49869f5de29557102
-      internalID: 559072644
+      spriteID: 854b3f8696b72e04a943d7f681c4b90a
+      internalID: -1060384231
       vertices: []
       indices: 
       edges: []
@@ -214,23 +214,9 @@ TextureImporter:
     nameFileIdTable:
       char_tiffi_scorenament_0: -1004396556
       char_tiffi_scorenament_1: 1628613686
-      char_tiffi_scorenament_10: 839025654
-      char_tiffi_scorenament_11: 1805627691
-      char_tiffi_scorenament_12: -768595584
-      char_tiffi_scorenament_13: 559072644
-      char_tiffi_scorenament_14: 2008356363
-      char_tiffi_scorenament_15: 1175392033
-      char_tiffi_scorenament_16: -1089453374
-      char_tiffi_scorenament_17: -148777316
-      char_tiffi_scorenament_18: -730138257
       char_tiffi_scorenament_2: 1780425803
       char_tiffi_scorenament_3: 712200801
       char_tiffi_scorenament_4: -1060384231
-      char_tiffi_scorenament_5: -1544032191
-      char_tiffi_scorenament_6: -269760346
-      char_tiffi_scorenament_7: -274559725
-      char_tiffi_scorenament_8: -1301836118
-      char_tiffi_scorenament_9: -162856697
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
