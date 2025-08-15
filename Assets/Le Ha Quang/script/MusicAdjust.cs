@@ -5,8 +5,8 @@ using UnityEngine;
 public class MusicAdjust : MonoBehaviour
 {
     public static MusicAdjust Instance { get; private set; }
-    private AudioSource audioSource;
-    //private AudioSource sfSource;
+    [SerializeField]public AudioSource audioSource;
+    [SerializeField]public AudioSource sfSource;
 
     void Awake()
     {
@@ -15,17 +15,33 @@ public class MusicAdjust : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        //sfSource = GetComponent<AudioSource>();
-        if (PlayerPrefs.HasKey("music") && PlayerPrefs.HasKey("soundeffect"))
+        MusicChange();
+        SoundEffectChange();
+    }
+
+    private void SoundEffectChange()
+    {
+        if (PlayerPrefs.HasKey("soundeffect"))
+        {
+            sfSource.volume = PlayerPrefs.GetFloat("soundeffect");
+
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("soundeffect", 1f);
+
+        }
+    }
+
+    private void MusicChange()
+    {
+        if (PlayerPrefs.HasKey("music"))
         {
             audioSource.volume = PlayerPrefs.GetFloat("music");
-            //sfSource.volume = PlayerPrefs.GetFloat("soundeffect");
         }
         else
         {
             PlayerPrefs.SetFloat("music", 1f);
-            PlayerPrefs.SetFloat("soundeffect", 1f);
         }
     }
 
@@ -37,7 +53,7 @@ public class MusicAdjust : MonoBehaviour
 
     public void SetSoundEffect(float value)
     {
-        //sfSource.volume = value;
+        sfSource.volume = value;
         PlayerPrefs.SetFloat("soundeffect", value);
         
     }

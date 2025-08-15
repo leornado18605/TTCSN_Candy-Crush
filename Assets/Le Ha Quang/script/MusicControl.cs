@@ -5,32 +5,53 @@ using UnityEngine.UI;
 public class MusicControl : MonoBehaviour
 {
     [SerializeField] Slider musicAdjust;
-    //[SerializeField] Slider sfAdjust;
+    [SerializeField] Slider sfAdjust;
 
 
     void Start()
     {
-        if (PlayerPrefs.HasKey("music")&&PlayerPrefs.HasKey("soundeffect"))
-        {
-            OnLoad();
-        }
-        else
-        {
-            ChangeMusic();
-        }
+        OnMusicChange();
+        OnSoundEffectChange();
+        
     }
 
     private void ChangeMusic()
     {
         MusicAdjust.Instance.SetMusic(musicAdjust.value);
-        //MusicAdjust.Instance.SetSoundEffect(sfAdjust.value);
+       
     }
 
-    private void OnLoad()
+    private void OnMusicChange()
     {
-        musicAdjust.value = PlayerPrefs.GetFloat("music");
-        //sfAdjust.value = PlayerPrefs.GetFloat("soundeffect");
+        if (PlayerPrefs.HasKey("music"))
+        {
+            musicAdjust.value = PlayerPrefs.GetFloat("music");
+        }
+        else
+        {
+            musicAdjust.onValueChanged.AddListener(value => ChangeMusic());
+        }
     }
+
+    public void ChangeSoundEffect()
+    {
+        MusicAdjust.Instance.SetSoundEffect(sfAdjust.value);
+
+    }
+
+    private void OnSoundEffectChange()
+    {
+        if (PlayerPrefs.HasKey("soundeffect"))
+        {
+            sfAdjust.value = PlayerPrefs.GetFloat("soundeffect");
+        }
+        else
+        {
+            sfAdjust.onValueChanged.AddListener(value => ChangeSoundEffect());
+        }
+    }
+
+   
     
 
 }
