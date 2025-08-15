@@ -8,13 +8,29 @@ using UnityEngine;
 public class CandyData : ScriptableObject
 {
    [SerializeField]
-   public List<CandyInfo> candies = new List<CandyInfo>(); 
+   public CandyInfo candies; 
 }
 
 [System.Serializable]
 public class CandyInfo
 {
     public CandyType candyType;
-    public Sprite candyIcon;
-
+    public Candy prefabs;
+}
+public enum CandyType
+{
+    Red,
+    Blue,
+    Green,
+    Yellow,
+    Purple,
+    Orange,
+}
+public enum CandySpecialType
+{
+    None,
+    StripedHorizontal,
+    StripedVertical,
+    Wrapped,
+    ColorBomb
 }

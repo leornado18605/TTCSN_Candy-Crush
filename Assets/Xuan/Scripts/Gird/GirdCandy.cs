@@ -2,223 +2,531 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class GirdCandy : Singleton<GirdCandy>
+
+public class GirdCandy : MonoBehaviour
 {
+    [Header("Prefabs")]
     [SerializeField] private Candy candyPrefab;
     [SerializeField] private Transform candyParent;
     [SerializeField] private CandyData candyData;
-    private int width = 9;
-    private int height = 9;
-    private Vector2 callSize;
 
-    private int x0;
-    private int y0;
-    private float timeDelayMove = 0.3f;
+    [Header("Cell")]
+    [SerializeField] private Cell cellPrefabs;
+    [SerializeField] private Transform cellParent;
+    public Vector2 cellSize;
 
-    private Candy[,] gridCandy;
+    [Header("Level Default")]
+    [SerializeField] private LevelData level;
 
-    private void Awake()
+    [Header("Timing")]
+    public float swapDuration = 0.15f;
+    public float dropDurationPerCell = 0.06f;
+    public float refillDelay = 0.05f;
+
+
+    /*[Header("Signals")]
+    public UnityEvent<int> onScoreChanged;
+    public UnityEvent<int> onMovesChanged;*/
+
+    [Header("Sorce")]
+    private Cell[,] cells;
+    private int score;
+    private int movesLeft;
+
+    private int width;
+    private int height;
+    private System.Random rng = new System.Random();
+
+    public bool IsBusy { get; private set; }
+
+    public void InitStartGame()
     {
-        callSize = candyPrefab.GetComponent<SpriteRenderer>().bounds.size;
-        callSize.x += 0.03f;
-        callSize.y += 0.03f;
-        gridCandy = new Candy[width, height];
-        SetPos();
-        SpawnCandy();
-    }
+        ClearGrid();
+        score = 0;
+        movesLeft = level.moveLimit;
 
-    public void SetGridCandy(Candy candy)
-    {
-        if (candy == null) return;
-        if (gridCandy == null) return;
-        if (candy.row < 0 || candy.row >= width || candy.column < 0 || candy.column >= height) return;
+        //onScoreChanged?.Invoke(score);
+        //onMovesChanged?.Invoke(movesLeft);
 
-        gridCandy[candy.row, candy.column] = candy;
-    }
-    public void SpawnCandy()
-    {
-        for(int i = 0; i < width; i++)
+        width = level.width;
+        height = level.height;
+
+        cells = new Cell[width, height];
+
+        cellSize = cellPrefabs.GetComponent<SpriteRenderer>().bounds.size;
+        cellSize.x += 0.03f;
+        cellSize.y += 0.03f;
+
+
+        Debug.Log("Spawn Cell Grid");
+        for (int y = 0; y < height; y++)
         {
-            for(int j = 0; j < height; j++)
+            for (int x = 0; x < width; x++)
             {
-                if (gridCandy[i, j] == null)
-                {
-                    Candy candy = PoolingManager.Spawn(candyPrefab, SetPosSpawnCandy(i,j), Quaternion.identity, candyParent);
+                Cell newCell = PoolingManager.Spawn(cellPrefabs, transform.position, Quaternion.identity, cellParent);
+                newCell.name = $"Cell_{x}_{y}";
+                newCell.transform.position = CellToWorld(new GridPosition(x, y));
+                
+                newCell.pos = new GridPosition(x, y);
+                newCell.isBlocked = false;
+                newCell.candy = null;
+                cells[x, y] = newCell;
+            }
+        }
+        StartCoroutine(FillBoardNoMatches());
+    }
 
-                    int index = Random.Range(0, candyData.candies.Count);
-                    candy.Init(candyData.candies[index], i, j);
-                    SetGridCandy(candy);
+    public Vector3 CellToWorld(GridPosition pos)
+    {
+        int x = width / 2;
+        int y = height / 2;
+
+        return new Vector3((pos.x - x) * cellSize.x,(pos.y - y)*cellSize.y , 0f);
+    }
+
+    public bool InBounds(int x, int y) => x >= 0 && x < width && y >= 0 && y < height;
+
+    public Candy SpawnRandomCandyAt(int x, int y)
+    {
+        CandyData def = level.candies[rng.Next(level.candies.Length)];  //lay list candy
+        Candy candy = PoolingManager.Spawn(def.candies.prefabs, cells[x, y].transform.position, Quaternion.identity, cells[x, y].transform);
+
+        candy.Init(def.candies.candyType);
+        cells[x, y].SetCandy(candy);
+
+        return candy;
+    }
+    IEnumerator FillBoardNoMatches()
+    {
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                if (cells[x, y].isBlocked) continue;
+
+                Candy newCandy;
+                int safety = 0;
+                do
+                {
+                    if (cells[x, y].candy != null) PoolingManager.Despawn(cells[x, y].candy.gameObject);
+                    newCandy = SpawnRandomCandyAt(x, y);
+                    safety++;
+                    if (safety > 50) break; // Avoid infinite
                 }
+                while (CreatesImmediateMatch(x, y));
+                yield return null;
             }
         }
     }
-    public void SetPos()
+    bool CreatesImmediateMatch(int x, int y)
     {
-        x0 = width / 2;
-        y0 = height / 2;
-    }
-    public Vector3 SetPosSpawnCandy(int column, int row)
-    {
-        int x = row - x0;
-        int y = column - y0;
+        // Check 2 left + this, 2 down + this
+        var target = cells[x, y].candy;
+        if (target == null) return false;
+        var color = target.Type;
 
-        
-        Vector3 pos = new Vector3(x * callSize.x, y * callSize.y, 0f);
-
-        return pos;
-    }
-
-    public bool CheckCandy(Candy candy)
-    {
-        if (gridCandy[candy.row, candy.column] == null) return false;
-
-        var horizontal = FindMatches(candy, new Vector2Int(1, 0));
-        if (horizontal.Count >= 3)
+        // Horizontal
+        if (x >= 2)
         {
-            DeleteCandy(horizontal, false);
-            return true;
+            var c1 = cells[x - 1, y].candy; var c2 = cells[x - 2, y].candy;
+            if (c1 && c2 && c1.Type == color && c2.Type == color) return true;
         }
-
-        var vertical = FindMatches(candy, new Vector2Int(0, 1));
-        if (vertical.Count >= 3)
+        // Vertical
+        if (y >= 2)
         {
-            DeleteCandy(vertical, true);
-            return true;
+            var c1 = cells[x, y - 1].candy; var c2 = cells[x, y - 2].candy;
+            if (c1 && c2 && c1.Type == color && c2.Type == color) return true;
         }
         return false;
     }
 
-    public void DeleteCandy(List<Candy> candyCheck, bool isHorizontal)
+    public IEnumerator TrySwap(Cell a, Cell b)
     {
-        List<Vector2Int> listCheck = new List<Vector2Int>();
-        int indexY = 9;
-        foreach(Candy candy in candyCheck)
+        if (IsBusy) yield break;
+        if (a == null || b == null || a.candy == null || b.candy == null) yield break;
+        if (!AreAdjacent(a.pos, b.pos)) yield break;
+
+        IsBusy = true;
+        yield return SwapCandies(a, b);
+
+        var matches = FindAllMatches();
+        if (matches.Count == 0)
         {
-            if (indexY > candy.row) indexY = candy.row;
-            listCheck.Add(new Vector2Int(candy.row, candy.column));
-            DeleteCandy(candy);
+            // swap back
+            yield return SwapCandies(a, b);
+            IsBusy = false;
+            yield break;
         }
 
-        if(!isHorizontal)
+        movesLeft--;
+        //onMovesChanged?.Invoke(movesLeft);
+
+        // Resolve cascades
+        yield return ResolveMatchesAndCascades(matches);
+        IsBusy = false;
+    }
+
+    bool AreAdjacent(GridPosition p1, GridPosition p2)
+    {
+        return (p1.x == p2.x && Mathf.Abs(p1.y - p2.y) == 1) || (p1.y == p2.y && Mathf.Abs(p1.x - p2.x) == 1);
+    }
+
+    IEnumerator SwapCandies(Cell a, Cell b)
+    {
+        var ca = a.candy; var cb = b.candy;
+        if (ca == null || cb == null) yield break;
+
+        var wa = ca.transform.position;
+        var wb = cb.transform.position;
+
+        // animate
+        var co1 = StartCoroutine(ca.AnimateMoveTo(wb, swapDuration));
+        var co2 = StartCoroutine(cb.AnimateMoveTo(wa, swapDuration));
+        yield return co1; yield return co2;
+
+        // reparent
+        a.SetCandy(cb);
+        b.SetCandy(ca);
+    }
+
+    List<HashSet<Cell>> FindAllMatches()
+    {
+        bool[,] visited = new bool[width,height];
+        var clusters = new List<HashSet<Cell>>();
+
+        for (int y = 0; y < height; y++)
         {
-            CheckGirdCandy(indexY, candyCheck[0].column);
-        }
-        else
-        {
-            foreach (Vector2Int candy in listCheck)
+            int runStart = 0;
+            for (int x = 0; x <= width; x++)
             {
-                CheckGirdCandy(candy.x, candy.y);
+                bool same = false;
+                if (x < width && cells[x, y].candy != null)
+                {
+                    if (x == runStart) { same = true; }
+                    else
+                    {
+                        var color = cells[runStart, y].candy?.Type;
+                        same = cells[x, y].candy?.Type == color;
+                    }
+                }
+                if (!same)
+                {
+                    int len = x - runStart;
+                    if (len >= 3)
+                    {
+                        var set = new HashSet<Cell>();
+                        for (int i = runStart; i < x; i++) set.Add(cells[i, y]);
+                        clusters.Add(set);
+                    }
+                    runStart = x;
+                }
             }
         }
-    }
-    public void DeleteCandy(Candy candy)
-    {
-        gridCandy[candy.row, candy.column] = null;
-        int r = candy.row;
-        int c = candy.column;
-        PoolingManager.Despawn(candy.gameObject);
 
-    }
-    private List<Candy> FindMatches(Candy candy, Vector2Int dir)
-    {
-        List<Candy> result = new List<Candy>();
-        result.Add(candy);
-
-        // Quét xuôi
-        int x = candy.row + dir.x;
-        int y = candy.column + dir.y;
-
-        while (x >= 0 && x < width && y >= 0 && y < height && gridCandy[x, y] != null)
+        // Vertical runs
+        for (int x = 0; x < width; x++)
         {
-            if (gridCandy[x, y].Type != candy.Type) break;
-
-            result.Add(gridCandy[x, y]);
-            x += dir.x;
-            y += dir.y;
-        }
-
-        // Quét ngược
-        x = candy.row - dir.x;
-        y = candy.column - dir.y;
-        while (x >= 0 && x < width && y >= 0 && y < height && gridCandy[x, y] != null)
-        {
-            if (gridCandy[x, y].Type != candy.Type) break;
-
-            result.Add(gridCandy[x, y]);
-            x -= dir.x;
-            y -= dir.y;
-        }
-
-        return result;
-    }
-
-    public void CheckGirdCandy(int r, int c)
-    {
-
-        for (int row = r; row < height; row++)
-        {
-            if (gridCandy[row, c] == null)
+            int runStart = 0;
+            for (int y = 0; y <= height; y++)
             {
-                int aboveRow = row + 1;
-                while (aboveRow < height && gridCandy[aboveRow, c] == null)
+                bool same = false;
+                if (y < height && cells[x, y].candy != null)
                 {
-                    aboveRow++;
-                }
-
-                int targetRow = row;
-                int targetCol = c;
-
-                if (aboveRow < height)
-                {
-                    // Có kẹo ở trên
-                    Candy candy = gridCandy[aboveRow, targetCol];
-                    gridCandy[aboveRow, targetCol] = null;
-
-                    Sequence seq = DOTween.Sequence();
-                    seq.Append(candy.transform.DOMove(SetPosSpawnCandy(targetRow, targetCol), timeDelayMove));
-                    seq.OnComplete(() =>
+                    if (y == runStart) { same = true; }
+                    else
                     {
-                        // Check index an toàn
-                        if (targetRow >= 0 && targetRow < height &&
-                            targetCol >= 0 && targetCol < width)
-                        {
-                            candy.SetPosition(targetRow, targetCol);
-                            gridCandy[targetRow, targetCol] = candy;
-                        }
+                        var color = cells[x, runStart].candy?.Type;
+                        same = cells[x, y].candy?.Type == color;
+                    }
+                }
+                if (!same)
+                {
+                    int len = y - runStart;
+                    if (len >= 3)
+                    {
+                        var set = new HashSet<Cell>();
+                        for (int i = runStart; i < y; i++) set.Add(cells[x, i]);
+                        clusters.Add(set);
+                    }
+                    runStart = y;
+                }
+            }
+        }
 
-                        seq.Kill();
-                    });
+        // Merge overlapping clusters (for T/L shapes => wrapped)
+        for (int i = 0; i < clusters.Count; i++)
+            for (int j = i + 1; j < clusters.Count; j++)
+            {
+                foreach (var c in clusters[i])
+                {
+                    if (clusters[j].Contains(c))
+                    {
+                        clusters[i].UnionWith(clusters[j]);
+                        clusters.RemoveAt(j);
+                        j--;
+                        break;
+                    }
+                }
+            }
+
+        // Filter by >=3
+        clusters.RemoveAll(s => s.Count < 3);
+        return clusters;
+    }
+
+    IEnumerator ResolveMatchesAndCascades(List<HashSet<Cell>> matches)
+    {
+        do
+        {
+            yield return HandleMatches(matches);
+            yield return CollapseColumns();
+            yield return RefillBoard();
+            matches = FindAllMatches();
+        } while (matches.Count > 0);
+    }
+
+    IEnumerator HandleMatches(List<HashSet<Cell>> matches)
+    {
+
+        foreach (var cluster in matches)
+        {
+            Cell specialCell = DetermineSpecialCreationCell(cluster, out CandySpecialType specialType);
+
+            int baseScore = 60; // per candy
+            int gained = baseScore * cluster.Count;
+            score += gained;
+            //onScoreChanged?.Invoke(score);
+
+            // Pop
+            foreach (var cell in cluster)
+            {
+                if (cell == specialCell)
+                    continue; 
+                if (cell.candy)
+                {
+                    StartCoroutine(cell.candy.AnimatePop(0.15f));
+                    //Destroy(cell.candy.gameObject, 0.16f);
+                    cell.candy = null;
+                }
+            }
+
+            if (specialCell != null)
+            {
+                if (specialCell.candy == null)
+                {
+                    // If specialCell was destroyed via union, spawn a basic then set special
+                    var spawned = SpawnRandomCandyAt(specialCell.pos.x, specialCell.pos.y);
+                    spawned.SpecialType = specialType;
                 }
                 else
                 {
-                    // Spawn kẹo mới
-                    Candy newCandy = PoolingManager.Spawn(
-                        candyPrefab,
-                        SetPosSpawnCandy(height, targetCol),
-                        Quaternion.identity,
-                        candyParent
-                    );
+                    specialCell.candy.SpecialType = specialType ;
+                }
+            }
 
-                    int index = Random.Range(0, candyData.candies.Count);
-                    newCandy.Init(candyData.candies[index], targetRow, targetCol);
+            yield return new WaitForSeconds(0.12f);
+        }
+    }
 
-                    gridCandy[targetRow, targetCol] = newCandy;
+    Cell DetermineSpecialCreationCell(HashSet<Cell> cluster, out CandySpecialType special)
+    {
+        special = CandySpecialType.None;
 
-                    Sequence seq = DOTween.Sequence();
-                    seq.Append(newCandy.transform.DOMove(SetPosSpawnCandy(targetRow, targetCol), timeDelayMove));
-                    seq.OnComplete(() => seq.Kill());
+        // Count by row/col
+        var byRow = new Dictionary<int, int>();
+        var byCol = new Dictionary<int, int>();
+        foreach (var c in cluster)
+        {
+            if (!byRow.ContainsKey(c.pos.y)) byRow[c.pos.y] = 0; byRow[c.pos.y]++;
+            if (!byCol.ContainsKey(c.pos.x)) byCol[c.pos.x] = 0; byCol[c.pos.x]++;
+        }
+
+        bool hasRow5 = false, hasCol5 = false, hasRow4 = false, hasCol4 = false;
+        foreach (var kv in byRow) { if (kv.Value >= 5) hasRow5 = true; if (kv.Value == 4) hasRow4 = true; }
+        foreach (var kv in byCol) { if (kv.Value >= 5) hasCol5 = true; if (kv.Value == 4) hasCol4 = true; }
+
+        bool isTL = (byRow.Count >= 2 && byCol.Count >= 2 && cluster.Count >= 5); 
+
+        if (hasRow5 || hasCol5)
+            special = CandySpecialType.ColorBomb;
+        else if (isTL)
+            special = CandySpecialType.Wrapped;
+        else if (hasRow4)
+            special = CandySpecialType.StripedHorizontal;
+        else if (hasCol4)
+            special = CandySpecialType.StripedVertical;
+        else
+            special = CandySpecialType.None;
+
+        Cell candidate = null;
+        int maxNeighbors = -1;
+        foreach (var c in cluster)
+        {
+            int n = 0;
+            if (cluster.Contains(GetCell(c.pos.x + 1, c.pos.y))) n++;
+            if (cluster.Contains(GetCell(c.pos.x - 1, c.pos.y))) n++;
+            if (cluster.Contains(GetCell(c.pos.x, c.pos.y + 1))) n++;
+            if (cluster.Contains(GetCell(c.pos.x, c.pos.y - 1))) n++;
+            if (n > maxNeighbors) { maxNeighbors = n; candidate = c; }
+        }
+
+        return candidate;
+    }
+
+    Cell GetCell(int x, int y)
+    {
+        if (!InBounds(x, y)) return null;
+        return cells[x, y];
+    }
+
+    IEnumerator CollapseColumns()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            int writeY = 0;
+            for (int y = 0; y < height; y++)
+            {
+                if (cells[x, y].isBlocked) { writeY = y + 1; continue; }
+                if (cells[x, y].candy != null)
+                {
+                    if (y != writeY)
+                    {
+                        // move down
+                        var c = cells[x, y].candy;
+                        cells[x, y].candy = null;
+                        cells[x, writeY].SetCandy(c);
+                        StartCoroutine(c.AnimateMoveTo(CellToWorld(new GridPosition(x, writeY)), dropDurationPerCell * (y - writeY)));
+                    }
+                    writeY++;
                 }
             }
         }
-/*        Debug.Log("--------Check--------");
-        for (int row = r; row < height; row++)
-        {
-            CheckCandy(gridCandy[row, c]);
-        }
-*/
+        yield return new WaitForSeconds(dropDurationPerCell * height);
     }
 
+    IEnumerator RefillBoard()
+    {
+        // spawn from top for empty cells
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (cells[x, y].isBlocked) continue;
+                if (cells[x, y].candy == null)
+                {
+                    var def = level.candies[rng.Next(level.candies.Length)];
+                    var go = Instantiate(def.candies.prefabs, transform);
+                    var candy = go.GetComponent<Candy>();
+                    candy.Init(def.candies.candyType);
+
+                    // spawn above board and drop
+                    int above = height;
+                    Vector3 spawnPos = CellToWorld(new GridPosition(x, above));
+                    go.transform.position = spawnPos;
+                    cells[x, y].SetCandy(candy);
+                    StartCoroutine(candy.AnimateMoveTo(CellToWorld(new GridPosition(x, y)), dropDurationPerCell * (above - y)));
+                    yield return new WaitForSeconds(refillDelay);
+                }
+            }
+        }
+        yield return new WaitForSeconds(dropDurationPerCell * height);
+    }
+
+    // --- Specials activation ---
+    public IEnumerator ActivateSpecialAt(Cell cell)
+    {
+        if (cell?.candy == null) yield break;
+        var c = cell.candy;
+        switch (c.SpecialType)
+        {
+            case CandySpecialType.StripedHorizontal:
+                yield return ClearGridByRow(cell.pos.y);
+                break;
+            case CandySpecialType.StripedVertical:
+                yield return ClearGridByColumn(cell.pos.x);
+                break;
+            case CandySpecialType.Wrapped:
+                yield return ClearGridByArea(cell.pos, 1);
+                break;
+            case CandySpecialType.ColorBomb:
+                yield return ClearGridByColor(c.Type);
+                break;
+        }
+    }
+
+    //Grid Candy Funcition
+    public void ClearGrid()
+    {
+        Debug.Log("Clear All Grid");
+        for(int row = 0; row < height; row ++)
+        {
+            for(int col = 0; col < width; col ++)
+            {
+                if (cells[row,col].candy != null)
+                {
+                    PoolingManager.Despawn(cells[row, col].candy.gameObject);
+                    cells[row, col].candy = null;
+                }
+            }
+        }
+    }
+    IEnumerator ClearGridByRow(int y)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            if (cells[x, y].candy != null)
+            {
+                PoolingManager.Despawn(cells[x, y].candy.gameObject);
+                cells[x, y].candy = null;
+            }
+        }
+        yield return new WaitForSeconds(0.1f);
+    }
+    IEnumerator ClearGridByColumn(int x)
+    {
+        for (int y = 0; y < height; y++)
+        {
+            if (cells[x, y].candy != null)
+            {
+                PoolingManager.Despawn(cells[x, y].candy.gameObject);
+                cells[x, y].candy = null;
+            }
+        }
+        yield return new WaitForSeconds(0.1f);
+    }
+    IEnumerator ClearGridByArea(GridPosition center, int radius)
+    {
+        for (int dx = -radius; dx <= radius; dx++)
+            for (int dy = -radius; dy <= radius; dy++)
+            {
+                int x = center.x + dx; int y = center.y + dy;
+
+                if (!InBounds(x, y)) continue;
+
+                if (cells[x, y].candy != null)
+                {
+                    PoolingManager.Despawn(cells[x, y].candy.gameObject);
+                    cells[x, y].candy = null;
+                }
+            }
+        yield return new WaitForSeconds(0.1f);
+    }
+    IEnumerator ClearGridByColor(CandyType type)
+    {
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+            {
+                var c = cells[x, y].candy;
+                if (c && c.Type == type)
+                {
+                    PoolingManager.Despawn(c.gameObject);
+                    cells[x, y].candy = null;
+                }
+            }
+        yield return new WaitForSeconds(0.1f);
+    }
 }
