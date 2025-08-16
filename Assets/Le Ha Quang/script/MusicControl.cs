@@ -15,7 +15,7 @@ public class MusicControl : MonoBehaviour
         
     }
 
-    private void ChangeMusic()
+    public void ChangeMusic()
     {
         MusicAdjust.Instance.SetMusic(musicAdjust.value);
        

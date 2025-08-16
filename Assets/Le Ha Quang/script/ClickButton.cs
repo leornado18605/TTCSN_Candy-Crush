@@ -4,27 +4,23 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class ClickButton : MonoBehaviour
 {
-     AudioSource audioSource;
-    [SerializeField] AudioClip audioClip;
+    [SerializeField] AudioSource audioSource;
+    
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        //audioSource = GetComponent<AudioSource>();
     }
     public void OnStartButtonClicked()
     {
-        audioSource.PlayOneShot(audioClip);
+        audioSource.PlayOneShot(audioSource.clip);
         SceneManager.LoadScene("Map scene");
     }
 
-    public void OnXClick()
-    {
-        audioSource.PlayOneShot(audioClip);
-        SceneManager.UnloadSceneAsync("Setting scene");
-    }
+   
     
     public void OnClickSetting()
     {
-        audioSource.PlayOneShot(audioClip);
+        audioSource.PlayOneShot(audioSource.clip);
         SceneManager.LoadScene("Setting scene",LoadSceneMode.Additive);
     }
     
