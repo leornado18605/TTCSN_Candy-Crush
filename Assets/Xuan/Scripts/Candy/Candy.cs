@@ -62,6 +62,6 @@ public class Candy : MonoBehaviour
             transform.Rotate(0, 0, 720f * Time.deltaTime);
             yield return null;
         }
-        Destroy(gameObject);
+        PoolingManager.Despawn(gameObject);
     }
 }

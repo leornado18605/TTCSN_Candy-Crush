@@ -1,7 +1,9 @@
 ﻿using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -26,11 +28,6 @@ public class GirdCandy : MonoBehaviour
     public float dropDurationPerCell = 0.06f;
     public float refillDelay = 0.05f;
 
-
-    /*[Header("Signals")]
-    public UnityEvent<int> onScoreChanged;
-    public UnityEvent<int> onMovesChanged;*/
-
     [Header("Sorce")]
     private Cell[,] cells;
     private int score;
@@ -42,14 +39,22 @@ public class GirdCandy : MonoBehaviour
 
     public bool IsBusy { get; private set; }
 
-    public void InitStartGame()
+    private void OnDisable()
     {
-        ClearGrid();
+        OutGame();
+    }
+
+    public void InitStartGame(LevelData lel)
+    {
+        //ClearGrid();
+
+        this.level = lel;
+
         score = 0;
         movesLeft = level.moveLimit;
 
-        //onScoreChanged?.Invoke(score);
-        //onMovesChanged?.Invoke(movesLeft);
+        ObserverManager<TextID>.PostEven(TextID.ChangeScore, score);
+        ObserverManager<TextID>.PostEven(TextID.ChangeMoveLimit, movesLeft);
 
         width = level.width;
         height = level.height;
@@ -115,7 +120,7 @@ public class GirdCandy : MonoBehaviour
                     if (cells[x, y].candy != null) PoolingManager.Despawn(cells[x, y].candy.gameObject);
                     newCandy = SpawnRandomCandyAt(x, y);
                     safety++;
-                    if (safety > 50) break; // Avoid infinite
+                    if (safety > 50) break; 
                 }
                 while (CreatesImmediateMatch(x, y));
                 yield return null;
@@ -125,20 +130,22 @@ public class GirdCandy : MonoBehaviour
     bool CreatesImmediateMatch(int x, int y)
     {
         // Check 2 left + this, 2 down + this
-        var target = cells[x, y].candy;
+        Candy target = cells[x, y].candy;
         if (target == null) return false;
-        var color = target.Type;
+        CandyType color = target.Type;
 
         // Horizontal
         if (x >= 2)
         {
-            var c1 = cells[x - 1, y].candy; var c2 = cells[x - 2, y].candy;
+            Candy c1 = cells[x - 1, y].candy; 
+            Candy c2 = cells[x - 2, y].candy;
             if (c1 && c2 && c1.Type == color && c2.Type == color) return true;
         }
         // Vertical
         if (y >= 2)
         {
-            var c1 = cells[x, y - 1].candy; var c2 = cells[x, y - 2].candy;
+            Candy c1 = cells[x, y - 1].candy;
+            Candy c2 = cells[x, y - 2].candy;
             if (c1 && c2 && c1.Type == color && c2.Type == color) return true;
         }
         return false;
@@ -147,6 +154,7 @@ public class GirdCandy : MonoBehaviour
     public IEnumerator TrySwap(Cell a, Cell b)
     {
         if (IsBusy) yield break;
+
         if (a == null || b == null || a.candy == null || b.candy == null) yield break;
         if (!AreAdjacent(a.pos, b.pos)) yield break;
 
@@ -163,7 +171,7 @@ public class GirdCandy : MonoBehaviour
         }
 
         movesLeft--;
-        //onMovesChanged?.Invoke(movesLeft);
+        ObserverManager<TextID>.PostEven(TextID.ChangeMoveLimit, movesLeft);
 
         // Resolve cascades
         yield return ResolveMatchesAndCascades(matches);
@@ -257,7 +265,6 @@ public class GirdCandy : MonoBehaviour
             }
         }
 
-        // Merge overlapping clusters (for T/L shapes => wrapped)
         for (int i = 0; i < clusters.Count; i++)
             for (int j = i + 1; j < clusters.Count; j++)
             {
@@ -299,26 +306,25 @@ public class GirdCandy : MonoBehaviour
             int baseScore = 60; // per candy
             int gained = baseScore * cluster.Count;
             score += gained;
-            //onScoreChanged?.Invoke(score);
+            ObserverManager<TextID>.PostEven(TextID.ChangeScore, score);
 
             // Pop
-            foreach (var cell in cluster)
+            foreach (Cell cell in cluster)
             {
                 if (cell == specialCell)
                     continue; 
                 if (cell.candy)
                 {
                     StartCoroutine(cell.candy.AnimatePop(0.15f));
-                    //Destroy(cell.candy.gameObject, 0.16f);
                     cell.candy = null;
                 }
             }
 
             if (specialCell != null)
             {
+                Debug.Log("SpecialCell is not null");
                 if (specialCell.candy == null)
                 {
-                    // If specialCell was destroyed via union, spawn a basic then set special
                     var spawned = SpawnRandomCandyAt(specialCell.pos.x, specialCell.pos.y);
                     spawned.SpecialType = specialType;
                 }
@@ -364,7 +370,7 @@ public class GirdCandy : MonoBehaviour
 
         Cell candidate = null;
         int maxNeighbors = -1;
-        foreach (var c in cluster)
+        foreach (Cell c in cluster)
         {
             int n = 0;
             if (cluster.Contains(GetCell(c.pos.x + 1, c.pos.y))) n++;
@@ -373,6 +379,9 @@ public class GirdCandy : MonoBehaviour
             if (cluster.Contains(GetCell(c.pos.x, c.pos.y - 1))) n++;
             if (n > maxNeighbors) { maxNeighbors = n; candidate = c; }
         }
+
+        if (special == CandySpecialType.None)
+            return null;
 
         return candidate;
     }
@@ -416,19 +425,22 @@ public class GirdCandy : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 if (cells[x, y].isBlocked) continue;
+
                 if (cells[x, y].candy == null)
                 {
-                    var def = level.candies[rng.Next(level.candies.Length)];
-                    var go = Instantiate(def.candies.prefabs, transform);
-                    var candy = go.GetComponent<Candy>();
+                    CandyData def = level.candies[rng.Next(level.candies.Length)];
+                    Candy candy = PoolingManager.Spawn(def.candies.prefabs, transform.position, Quaternion.identity, cells[x,y].transform);
+
                     candy.Init(def.candies.candyType);
 
                     // spawn above board and drop
                     int above = height;
                     Vector3 spawnPos = CellToWorld(new GridPosition(x, above));
-                    go.transform.position = spawnPos;
+                    candy.transform.position = spawnPos;
+
                     cells[x, y].SetCandy(candy);
                     StartCoroutine(candy.AnimateMoveTo(CellToWorld(new GridPosition(x, y)), dropDurationPerCell * (above - y)));
+
                     yield return new WaitForSeconds(refillDelay);
                 }
             }
@@ -436,7 +448,6 @@ public class GirdCandy : MonoBehaviour
         yield return new WaitForSeconds(dropDurationPerCell * height);
     }
 
-    // --- Specials activation ---
     public IEnumerator ActivateSpecialAt(Cell cell)
     {
         if (cell?.candy == null) yield break;
@@ -528,5 +539,24 @@ public class GirdCandy : MonoBehaviour
                 }
             }
         yield return new WaitForSeconds(0.1f);
+    }
+    public void OutGame()
+    {
+        for(int x = 0;x <width;x++)
+        {
+            for(int y = 0; y< height;y++)
+            {
+                if (cells[x, y] != null)
+                {
+                    if (cells[x, y].candy != null)
+                    {
+                        PoolingManager.Despawn(cells[x, y].candy.gameObject);
+                        cells[x, y].candy = null;
+                    }
+
+                    PoolingManager.Despawn(cells[x, y].gameObject);
+                }
+            }
+        }
     }
 }

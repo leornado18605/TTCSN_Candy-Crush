@@ -22,7 +22,7 @@ public class InputController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0) && selected != null)
         {
-            var releaseWorld = cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 releaseWorld = cam.ScreenToWorldPoint(Input.mousePosition);
             releaseWorld.z = 0f;
             Vector2 delta = releaseWorld - pressWorld;
             if (delta.magnitude > 0.2f)
