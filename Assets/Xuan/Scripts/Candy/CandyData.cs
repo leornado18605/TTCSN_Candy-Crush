@@ -15,7 +15,8 @@ public class CandyData : ScriptableObject
 public class CandyInfo
 {
     public CandyType candyType;
-    public Candy prefabs;
+    public CandySpecialType specialType;
+    public Sprite icon;
 }
 public enum CandyType
 {

@@ -42,7 +42,7 @@ public class StartGame : MonoBehaviour
     {
         pannelLoading.SetActive(true);
 
-        DOVirtual.DelayedCall(2f, () =>
+        DOVirtual.DelayedCall(1f, () =>
         {
             pannelLoading.SetActive(false);
             MainPannel.SetActive(true);

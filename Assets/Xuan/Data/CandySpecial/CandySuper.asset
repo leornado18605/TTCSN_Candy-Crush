@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b10a8f7b4204e2f4199eceed0fc49446, type: 3}
-  m_Name: Purple
+  m_Name: CandySuper
   m_EditorClassIdentifier: 
   candies:
-    candyType: 4
-    specialType: 0
-    prefabs: {fileID: 7514686246075299070, guid: e76f972664892934aa83fc3c6893f836, type: 3}
-    icon: {fileID: 1901888993, guid: 51479c6849d2f7d418808966ce471a82, type: 3}
+    candyType: 0
+    specialType: 4
+    icon: {fileID: -102183609, guid: 51479c6849d2f7d418808966ce471a82, type: 3}

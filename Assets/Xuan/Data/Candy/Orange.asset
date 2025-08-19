@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   candies:
     candyType: 5
+    specialType: 0
     prefabs: {fileID: 199640784864141062, guid: 220c49f608857e84dbe365780b6a3b5c, type: 3}
+    icon: {fileID: -403599124, guid: 51479c6849d2f7d418808966ce471a82, type: 3}

@@ -8,7 +8,6 @@ public class Candy : MonoBehaviour
 {
     [Header("Candy")]
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private GameObject prefabs;
     private CandyType candyType;
     public CandyType Type => candyType;
     private CandySpecialType specialType;
@@ -17,26 +16,13 @@ public class Candy : MonoBehaviour
         get => specialType;
         set => specialType = value;
     }
-    public GameObject Prefabs => prefabs;
     public Cell CurrentCell { get; set; }
-    public int row;
-    public int column;
 
-    public void Init(CandyType type , CandySpecialType specialType = CandySpecialType.None)
+    public void Init(CandyType type , CandySpecialType specialType = CandySpecialType.None, Sprite sprite = null)
     {
         this.candyType = type;
         this.specialType = specialType;
-    }
-    public void SetPosition(int r, int c)
-    {
-        row = r;
-        column = c;
-        
-    }
-
-    public void CandyPop()
-    {
-        PoolingManager.Despawn(gameObject);
+        if(sprite != null) spriteRenderer.sprite = sprite;
     }
 
     public IEnumerator AnimateMoveTo(Vector3 worldTarget, float duration)

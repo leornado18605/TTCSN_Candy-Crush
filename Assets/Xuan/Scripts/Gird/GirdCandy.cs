@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
 
 public class GirdCandy : MonoBehaviour
 {
-    [Header("Prefabs")]
+    [Header("Candy")]
     [SerializeField] private Candy candyPrefab;
-    [SerializeField] private Transform candyParent;
-    [SerializeField] private CandyData candyData;
+    [SerializeField] private CandyDataController dataController;
 
     [Header("Cell")]
     [SerializeField] private Cell cellPrefabs;
@@ -62,8 +62,8 @@ public class GirdCandy : MonoBehaviour
         cells = new Cell[width, height];
 
         cellSize = cellPrefabs.GetComponent<SpriteRenderer>().bounds.size;
-        cellSize.x += 0.03f;
-        cellSize.y += 0.03f;
+        //cellSize.x += 0.03f;
+        //cellSize.y += 0.03f;
 
 
         Debug.Log("Spawn Cell Grid");
@@ -97,9 +97,9 @@ public class GirdCandy : MonoBehaviour
     public Candy SpawnRandomCandyAt(int x, int y)
     {
         CandyData def = level.candies[rng.Next(level.candies.Length)];  //lay list candy
-        Candy candy = PoolingManager.Spawn(def.candies.prefabs, cells[x, y].transform.position, Quaternion.identity, cells[x, y].transform);
+        Candy candy = PoolingManager.Spawn(candyPrefab, cells[x, y].transform.position, Quaternion.identity, cells[x, y].transform);
 
-        candy.Init(def.candies.candyType);
+        candy.Init(def.candies.candyType,def.candies.specialType,def.candies.icon);
         cells[x, y].SetCandy(candy);
 
         return candy;
@@ -311,7 +311,7 @@ public class GirdCandy : MonoBehaviour
             // Pop
             foreach (Cell cell in cluster)
             {
-                if (cell == specialCell)
+                if (cell == specialCell && specialType != CandySpecialType.None)
                     continue; 
                 if (cell.candy)
                 {
@@ -320,22 +320,31 @@ public class GirdCandy : MonoBehaviour
                 }
             }
 
-            if (specialCell != null)
+            if (specialCell != null && specialType != CandySpecialType.None)
             {
                 Debug.Log("SpecialCell is not null");
                 if (specialCell.candy == null)
                 {
                     var spawned = SpawnRandomCandyAt(specialCell.pos.x, specialCell.pos.y);
-                    spawned.SpecialType = specialType;
+                    specialCell.candy = spawned;
+                    SetCandySpecial(specialCell, specialType);
                 }
                 else
                 {
-                    specialCell.candy.SpecialType = specialType ;
+                    SetCandySpecial(specialCell, specialType);
                 }
             }
 
             yield return new WaitForSeconds(0.12f);
         }
+    }
+    public void SetCandySpecial(Cell cell, CandySpecialType specialType)
+    {
+        if (cell == null || cell.candy == null) return;
+
+        cell.candy.SpecialType = specialType;
+
+        dataController.SetCandySpecial(cell.candy, specialType, cell.candy.Type);
     }
 
     Cell DetermineSpecialCreationCell(HashSet<Cell> cluster, out CandySpecialType special)
@@ -379,9 +388,6 @@ public class GirdCandy : MonoBehaviour
             if (cluster.Contains(GetCell(c.pos.x, c.pos.y - 1))) n++;
             if (n > maxNeighbors) { maxNeighbors = n; candidate = c; }
         }
-
-        if (special == CandySpecialType.None)
-            return null;
 
         return candidate;
     }
@@ -429,9 +435,9 @@ public class GirdCandy : MonoBehaviour
                 if (cells[x, y].candy == null)
                 {
                     CandyData def = level.candies[rng.Next(level.candies.Length)];
-                    Candy candy = PoolingManager.Spawn(def.candies.prefabs, transform.position, Quaternion.identity, cells[x,y].transform);
+                    Candy candy = PoolingManager.Spawn(candyPrefab, transform.position, Quaternion.identity, cells[x,y].transform);
 
-                    candy.Init(def.candies.candyType);
+                    candy.Init(def.candies.candyType,def.candies.specialType, def.candies.icon);
 
                     // spawn above board and drop
                     int above = height;
@@ -451,7 +457,7 @@ public class GirdCandy : MonoBehaviour
     public IEnumerator ActivateSpecialAt(Cell cell)
     {
         if (cell?.candy == null) yield break;
-        var c = cell.candy;
+        Candy c = cell.candy;
         switch (c.SpecialType)
         {
             case CandySpecialType.StripedHorizontal:
@@ -470,21 +476,7 @@ public class GirdCandy : MonoBehaviour
     }
 
     //Grid Candy Funcition
-    public void ClearGrid()
-    {
-        Debug.Log("Clear All Grid");
-        for(int row = 0; row < height; row ++)
-        {
-            for(int col = 0; col < width; col ++)
-            {
-                if (cells[row,col].candy != null)
-                {
-                    PoolingManager.Despawn(cells[row, col].candy.gameObject);
-                    cells[row, col].candy = null;
-                }
-            }
-        }
-    }
+
     IEnumerator ClearGridByRow(int y)
     {
         for (int x = 0; x < width; x++)

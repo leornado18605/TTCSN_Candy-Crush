@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -121,7 +121,784 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: liveops_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 913
+        width: 435
+        height: 111
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78c387e54b93f4c47a072daa88ac8ca5
+      internalID: -1847931204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_1
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 733
+        width: 142
+        height: 142
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a4b84a13ddccad4cb638dc011bcb48b
+      internalID: -1241583697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_2
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 167
+        width: 79
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ff149fe551e55b48afa6034beae3738
+      internalID: 523870675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_3
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 219
+        width: 80
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5bbb28f262ff70e4d9b72e0bdc516851
+      internalID: 93772531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_4
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 104
+        width: 44
+        height: 47
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0668f6f0a52c85a4a88a8eee5339d1d1
+      internalID: -248194131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_5
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 697
+        width: 420
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c28544e73ca0aab459e414a789d17aa1
+      internalID: -1928486346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_6
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 604
+        width: 91
+        height: 87
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a5a830e9dba6c74a820bc849c79801d
+      internalID: -413834401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_7
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 400
+        width: 28
+        height: 292
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd1bd2899c7ac82449d64acb5638812e
+      internalID: 1593933524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_8
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 138
+        width: 31
+        height: 292
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f6900b0e4dadc249bf47bcc0bcbb95e
+      internalID: 1534373614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_9
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 33
+        width: 182
+        height: 183
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0a1f7c70cda1774b81ce075cf5952df
+      internalID: -563052831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_10
+      rect:
+        serializedVersion: 2
+        x: 943
+        y: 589
+        width: 36
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4bef425edfd16c54d8b6a1d962948251
+      internalID: -2061376946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_11
+      rect:
+        serializedVersion: 2
+        x: 881
+        y: 571
+        width: 9
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4435f02822ded414a969027be8a0791b
+      internalID: 1592774010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_12
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 594
+        width: 22
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 10, y: 0, z: 11, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b06380abc5bc50841bbd42abe44730ba
+      internalID: 848779264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_13
+      rect:
+        serializedVersion: 2
+        x: 580
+        y: 533
+        width: 92
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 036eb38777aece54aa4bc07c69bf37b9
+      internalID: 771626155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_14
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 816
+        width: 29
+        height: 207
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 647dcd622b778ea4da1cf365f4710df4
+      internalID: -153709854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_15
+      rect:
+        serializedVersion: 2
+        x: 869
+        y: 816
+        width: 28
+        height: 207
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1de9816e5bca8394cac10cbdf212bba2
+      internalID: -1454494469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_16
+      rect:
+        serializedVersion: 2
+        x: 947
+        y: 838
+        width: 30
+        height: 186
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89c98fff0432b5b4c9086ac6e5a671f0
+      internalID: 1809215594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_17
+      rect:
+        serializedVersion: 2
+        x: 984
+        y: 838
+        width: 30
+        height: 186
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5449c374abe9e0b41a3c486539064b41
+      internalID: -530879915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_18
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 878
+        width: 420
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a704d93ed44db54bbdb35882998cfd7
+      internalID: -733566858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_19
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 931
+        width: 95
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 42, y: 0, z: 43, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42e52a47aaaf5484c9c125a13b910f58
+      internalID: -1833827327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_20
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 922
+        width: 103
+        height: 102
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 14, y: 14, z: 15, w: 11}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7ea0a686b8c5624eb4fa014446398b3
+      internalID: -1972638965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_21
+      rect:
+        serializedVersion: 2
+        x: 602
+        y: 905
+        width: 70
+        height: 119
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2f6cd7b3938b4b4eb02fd391d4313ad
+      internalID: -437296403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_22
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 762
+        width: 158
+        height: 111
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6ab8865deee28f4d97df8d5ae3929ae
+      internalID: -1858119803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_23
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 740
+        width: 124
+        height: 135
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 831e62c894d338f488dea2c9547a37a4
+      internalID: 1197741460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_24
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 849
+        width: 78
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c2fc7f4a5cb5ca438376109241a6069
+      internalID: -1794386569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_25
+      rect:
+        serializedVersion: 2
+        x: 786
+        y: 831
+        width: 59
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54dd55796b8bdeb43afd061138f67d72
+      internalID: 663025355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_26
+      rect:
+        serializedVersion: 2
+        x: 775
+        y: 937
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3a4ae690d7170b4f82ebe1a788431e8
+      internalID: -758936453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_27
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 745
+        width: 50
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 933f972b2c053bf4fb8bf6a0b40e1cbd
+      internalID: -769314241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_28
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 701
+        width: 44
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 284b44519cec8104b88b894d3cc11b4e
+      internalID: -2134422321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_29
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 484
+        width: 72
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c03a033ffc535f0469d63c714935c8d3
+      internalID: 491176889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_30
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 391
+        width: 82
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a47b9f7efb5d08d48bf2dcabd39ddde8
+      internalID: 784850256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_31
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 555
+        width: 142
+        height: 137
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 860df2eedd1e5a844a25dbf951d6b9ea
+      internalID: 842929316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_32
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 558
+        width: 133
+        height: 134
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5f45c66ac411254ebd09c4c56f553e1
+      internalID: -1763879371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_33
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 26
+        width: 47
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2639e0c4567151b4e837ab95f059b456
+      internalID: -2043330058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_34
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 9
+        width: 98
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4916767b1003b34d9808e5e53ae349f
+      internalID: -1346758224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_35
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 382
+        width: 130
+        height: 129
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1e92f7b5df9f8b49a53fc4ecc9dbd9f
+      internalID: -1310237341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: liveops_36
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 596
+        width: 58
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f61b6823f6182f9449ea2b3d34ea2472
+      internalID: -512456469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +909,44 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      liveops_0: -1847931204
+      liveops_1: -1241583697
+      liveops_10: -2061376946
+      liveops_11: 1592774010
+      liveops_12: 848779264
+      liveops_13: 771626155
+      liveops_14: -153709854
+      liveops_15: -1454494469
+      liveops_16: 1809215594
+      liveops_17: -530879915
+      liveops_18: -733566858
+      liveops_19: -1833827327
+      liveops_2: 523870675
+      liveops_20: -1972638965
+      liveops_21: -437296403
+      liveops_22: -1858119803
+      liveops_23: 1197741460
+      liveops_24: -1794386569
+      liveops_25: 663025355
+      liveops_26: -758936453
+      liveops_27: -769314241
+      liveops_28: -2134422321
+      liveops_29: 491176889
+      liveops_3: 93772531
+      liveops_30: 784850256
+      liveops_31: 842929316
+      liveops_32: -1763879371
+      liveops_33: -2043330058
+      liveops_34: -1346758224
+      liveops_35: -1310237341
+      liveops_36: -512456469
+      liveops_4: -248194131
+      liveops_5: -1928486346
+      liveops_6: -413834401
+      liveops_7: 1593933524
+      liveops_8: 1534373614
+      liveops_9: -563052831
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
