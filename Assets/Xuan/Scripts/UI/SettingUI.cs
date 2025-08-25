@@ -12,9 +12,6 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private Button btnQuitLevel; 
     [SerializeField] private Button btnBack;
 
-    [Header("UI")]
-    [SerializeField] private LoseUI loseUI;
-
     [SerializeField] private GameObject pannelSetting;
     [SerializeField] private GameObject MainGame;
 
@@ -58,7 +55,7 @@ public class SettingUI : MonoBehaviour
             pannelSetting.SetActive(false);
             pannelSetting.transform.position = pannelSetting.transform.position + new Vector3(0, -10, 0);
             MainGame.SetActive(false);
-            loseUI.OnLose();
+            UIController.Instance.loseUI.OnLose();
             GirdCandy.Instance.IsBusy = false;
         });
     }    

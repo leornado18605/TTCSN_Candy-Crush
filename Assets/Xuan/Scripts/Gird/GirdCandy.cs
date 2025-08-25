@@ -23,10 +23,6 @@ public class GirdCandy : Singleton<GirdCandy>
     [Header("Level Default")]
     [SerializeField] private LevelData level;
 
-    [Header("UI")]
-    [SerializeField] private LoseUI loseUI;
-    [SerializeField] private WinUI winUI;
-
     [Header("Timing")]
     public float swapDuration = 0.15f;
     public float dropDurationPerCell = 0.06f;
@@ -618,13 +614,13 @@ public class GirdCandy : Singleton<GirdCandy>
         if (score >= level.targetScore) 
         {
             gameObject.SetActive(false);
-            winUI.OnWin();
+            UIController.Instance.winUI.OnWin();
             AudioController.Instance.PlayAudioGameWin();
         }
         else if(movesLeft <= 0)
         {
             gameObject.SetActive(false);
-            loseUI.OnLose();
+            UIController.Instance.loseUI.OnLose();
             AudioController.Instance.PlayAudioGameLose();
         }
     }

@@ -17,8 +17,18 @@ public class AudioController : Singleton<AudioController>
     [Header("Button")]
     [SerializeField] private Button btnMusic;
     [SerializeField] private Button btnSound;
+    [SerializeField] private Button btnRung;
     private bool isClickMusic = false;
     private bool isClickSound = false;
+    private bool isClickRung = false;
+
+    [Header("Image")]
+    [SerializeField] private Image imgMusic;
+    [SerializeField] private Image imgSound;
+    [SerializeField] private Image imgRung;
+    [SerializeField] private Image imgSliderMusic;
+    [SerializeField] private Image imgSliderSound;
+
 
     [Header("Text")]
     [SerializeField] private TextMeshProUGUI textMusic;
@@ -40,6 +50,10 @@ public class AudioController : Singleton<AudioController>
         {
             OnClickButtonSound();
         });
+        btnRung.onClick.AddListener(delegate
+        {
+            OnClickRung();
+        });
 
         UpdateMusic(PlayerPrefs.GetFloat("Music", 0f));
         UpdateSound(PlayerPrefs.GetFloat("Sound", 0f));
@@ -50,17 +64,41 @@ public class AudioController : Singleton<AudioController>
     //Slider
     public void UpdateMusic(float val)
     {
-        textMusic.text = ((int)val*100).ToString() + " %";
+        textMusic.text = ((int)(val*100)).ToString() + " %";
         sliderMusic.value = val;
         audioMusic.volume = val;
+
+        if (val == 0)
+        {
+            imgSliderMusic.gameObject.SetActive(true);
+            imgMusic.gameObject.SetActive(true);
+        }
+        else
+        {
+            imgSliderMusic.gameObject.SetActive(false);
+            imgMusic.gameObject.SetActive(false);
+        }
+
         PlayerPrefs.SetFloat("Music", val);
         PlayerPrefs.Save();
     }
     public void UpdateSound(float val)
     {
-        textSound.text = ((int)val * 100).ToString() + " %";
+        textSound.text = ((int)(val * 100)).ToString() + " %";
         sliderSound.value = val;
         audioSound.volume = val;
+
+        if(val == 0)
+        {
+            imgSliderSound.gameObject.SetActive(true);
+            imgSound.gameObject.SetActive(true);
+        }
+        else
+        {
+            imgSliderSound.gameObject.SetActive(false);
+            imgSound.gameObject.SetActive(false);
+        }
+
         PlayerPrefs.SetFloat("Sound", val);
         PlayerPrefs.Save();
     }
@@ -72,9 +110,12 @@ public class AudioController : Singleton<AudioController>
         {
             isClickMusic = false;
             UpdateMusic(1f);
-            return;
         }
-        UpdateMusic(0f);
+        else
+        {
+            isClickMusic = true;
+            UpdateMusic(0f);
+        }
     }
     public void OnClickButtonSound()
     {
@@ -82,9 +123,26 @@ public class AudioController : Singleton<AudioController>
         {
             isClickSound = false;
             UpdateSound(1f);
-            return;
         }
-        UpdateSound(0f);
+        else
+        {
+            isClickSound = true;
+            UpdateSound(0f);
+        }
+
+    }
+    public void OnClickRung()
+    {
+        if(isClickRung)
+        {
+            isClickRung = false;
+            imgRung.gameObject.SetActive(false);
+        }
+        else
+        {
+            isClickRung = true;
+            imgRung.gameObject.SetActive(true);
+        }
     }
     public void PlayAudioMenuGame()
     {
