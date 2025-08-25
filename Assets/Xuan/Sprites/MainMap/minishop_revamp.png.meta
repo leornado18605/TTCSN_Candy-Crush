@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6f1d1a06914ccaf48badab03ea422b2c
+guid: 251224ed7327e7b419bff857f6a08c38
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,34 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: gamehud_0
+      name: minishop_revamp_0
       rect:
         serializedVersion: 2
-        x: 945
-        y: 920
-        width: 64
-        height: 101
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 27, y: 46, z: 26, w: 44}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8175740bbd87dca48849b2b216a7076f
-      internalID: 637768610
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gamehud_1
-      rect:
-        serializedVersion: 2
-        x: 955
-        y: 341
-        width: 58
-        height: 59
+        x: 153
+        y: 0
+        width: 81
+        height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,134 +137,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3ed847d93d6981f4abc147e8f5b5e7fb
-      internalID: 870974777
+      spriteID: 945fa66b80d0d0146a8ea060101d8113
+      internalID: -169809998
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gamehud_2
+      name: minishop_revamp_1
       rect:
         serializedVersion: 2
-        x: 182
-        y: 879
-        width: 104
-        height: 143
+        x: 4
+        y: 0
+        width: 193
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 33, y: 35, z: 34, w: 36}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cb7ced11734d2a54f9f54b399fc4d84d
-      internalID: 567708697
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gamehud_3
-      rect:
-        serializedVersion: 2
-        x: 298
-        y: 892
-        width: 129
-        height: 130
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 510e9b7aef02f6d47bbfc7a0aa1f0f3c
-      internalID: -1885224658
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gamehud_4
-      rect:
-        serializedVersion: 2
-        x: 12
-        y: 875
-        width: 148
-        height: 142
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 69, y: 66, z: 68, w: 65}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 372fe974ab1460642a65e6e5f6d3f02a
-      internalID: -1628916288
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gamehud_5
-      rect:
-        serializedVersion: 2
-        x: 530
-        y: 569
-        width: 105
-        height: 106
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1a2e3b921f0d5ac468c28dd8e4183ae6
-      internalID: -879466644
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gamehud_6
-      rect:
-        serializedVersion: 2
-        x: 963
-        y: 142
-        width: 52
-        height: 39
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7368597536184414aaff2de6fa3acad4
-      internalID: 371520917
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gamehud_7
-      rect:
-        serializedVersion: 2
-        x: 826
-        y: 83
-        width: 50
-        height: 47
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c26368b5d34bf09489003977c4c1da18
-      internalID: -1799565347
+      spriteID: 09eb0f2151abaae4fbd49c1057234fe3
+      internalID: 2076176339
       vertices: []
       indices: 
       edges: []
@@ -301,14 +175,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      gamehud_0: 637768610
-      gamehud_1: 870974777
-      gamehud_2: 567708697
-      gamehud_3: -1885224658
-      gamehud_4: -1628916288
-      gamehud_5: -879466644
-      gamehud_6: 371520917
-      gamehud_7: -1799565347
+      minishop_revamp_0: -169809998
+      minishop_revamp_1: 2076176339
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

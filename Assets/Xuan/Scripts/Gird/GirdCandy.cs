@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-public class GirdCandy : MonoBehaviour
+public class GirdCandy : Singleton<GirdCandy>
 {
     [Header("Candy")]
     [SerializeField] private Candy candyPrefab;
@@ -22,6 +22,10 @@ public class GirdCandy : MonoBehaviour
 
     [Header("Level Default")]
     [SerializeField] private LevelData level;
+
+    [Header("UI")]
+    [SerializeField] private LoseUI loseUI;
+    [SerializeField] private WinUI winUI;
 
     [Header("Timing")]
     public float swapDuration = 0.15f;
@@ -37,23 +41,31 @@ public class GirdCandy : MonoBehaviour
     private int height;
     private System.Random rng = new System.Random();
 
-    public bool IsBusy { get; private set; }
+    public bool IsBusy { get; set; }
+    public int Score => score;
 
     private void OnDisable()
     {
         OutGame();
+        AudioController.Instance.StopMusic();
     }
 
-    public void InitStartGame(LevelData lel)
+    public void InitStartGame(LevelData lel = null)
     {
+        AudioController.Instance.PlayAudioGamePlay();
         //ClearGrid();
+        if(lel == null && level == null)
+        {
+            UnityEngine.Debug.LogError("No Level Data Found");
+            return;
+        }
 
-        this.level = lel;
+        if (lel != null) this.level = lel;
 
         score = 0;
         movesLeft = level.moveLimit;
 
-        ObserverManager<TextID>.PostEven(TextID.ChangeScore, score);
+        ObserverManager<TextID>.PostEven(TextID.SetupScore, level.targetScore);
         ObserverManager<TextID>.PostEven(TextID.ChangeMoveLimit, movesLeft);
 
         width = level.width;
@@ -154,6 +166,7 @@ public class GirdCandy : MonoBehaviour
     public IEnumerator TrySwap(Cell a, Cell b)
     {
         if (IsBusy) yield break;
+        bool isCheck = false;
 
         if (a == null || b == null || a.candy == null || b.candy == null) yield break;
         if (!AreAdjacent(a.pos, b.pos)) yield break;
@@ -161,17 +174,29 @@ public class GirdCandy : MonoBehaviour
         IsBusy = true;
         yield return SwapCandies(a, b);
 
+        if(a.candy.SpecialType == CandySpecialType.ColorBomb || b.candy.SpecialType == CandySpecialType.ColorBomb)
+        {
+            Candy targetCandy = a.candy.SpecialType == CandySpecialType.ColorBomb ? b.candy : a.candy;
+            Cell c = a.candy.SpecialType != CandySpecialType.ColorBomb ? b : a;
+            isCheck = true;
+
+            StartCoroutine(c.candy.AnimatePop(0.15f));
+            c.candy = null;
+
+            yield return ClearGridByColor(targetCandy.Type);
+        }
+
         var matches = FindAllMatches();
-        if (matches.Count == 0)
+        if (matches.Count == 0 && !isCheck)
         {
             // swap back
             yield return SwapCandies(a, b);
             IsBusy = false;
+            CheckMoveLimit();
             yield break;
         }
 
-        movesLeft--;
-        ObserverManager<TextID>.PostEven(TextID.ChangeMoveLimit, movesLeft);
+        ChangeMoveLeft(-1);
 
         // Resolve cascades
         yield return ResolveMatchesAndCascades(matches);
@@ -185,11 +210,11 @@ public class GirdCandy : MonoBehaviour
 
     IEnumerator SwapCandies(Cell a, Cell b)
     {
-        var ca = a.candy; var cb = b.candy;
+        Candy ca = a.candy; Candy cb = b.candy;
         if (ca == null || cb == null) yield break;
 
-        var wa = ca.transform.position;
-        var wb = cb.transform.position;
+        Vector3 wa = ca.transform.position;
+        Vector3 wb = cb.transform.position;
 
         // animate
         var co1 = StartCoroutine(ca.AnimateMoveTo(wb, swapDuration));
@@ -294,6 +319,7 @@ public class GirdCandy : MonoBehaviour
             yield return RefillBoard();
             matches = FindAllMatches();
         } while (matches.Count > 0);
+        CheckMoveLimit();
     }
 
     IEnumerator HandleMatches(List<HashSet<Cell>> matches)
@@ -305,8 +331,7 @@ public class GirdCandy : MonoBehaviour
 
             int baseScore = 60; // per candy
             int gained = baseScore * cluster.Count;
-            score += gained;
-            ObserverManager<TextID>.PostEven(TextID.ChangeScore, score);
+            ChangeScore(gained);
 
             // Pop
             foreach (Cell cell in cluster)
@@ -315,8 +340,15 @@ public class GirdCandy : MonoBehaviour
                     continue; 
                 if (cell.candy)
                 {
-                    StartCoroutine(cell.candy.AnimatePop(0.15f));
-                    cell.candy = null;
+                    if(cell.candy.SpecialType == CandySpecialType.StripedHorizontal || cell.candy.SpecialType == CandySpecialType.StripedVertical)
+                    {
+                        StartCoroutine(ActivateSpecialAt(cell));
+                    }
+                    else if( cell.candy.SpecialType == CandySpecialType.None)
+                    {
+                        StartCoroutine(cell.candy.AnimatePop(0.15f));
+                        cell.candy = null;
+                    }
                 }
             }
 
@@ -457,6 +489,7 @@ public class GirdCandy : MonoBehaviour
     public IEnumerator ActivateSpecialAt(Cell cell)
     {
         if (cell?.candy == null) yield break;
+
         Candy c = cell.candy;
         switch (c.SpecialType)
         {
@@ -483,8 +516,15 @@ public class GirdCandy : MonoBehaviour
         {
             if (cells[x, y].candy != null)
             {
+                if( cells[x, y].candy.SpecialType == CandySpecialType.StripedVertical)
+                {
+                    StartCoroutine(ActivateSpecialAt(cells[x, y]));
+                    continue;
+                }
                 PoolingManager.Despawn(cells[x, y].candy.gameObject);
                 cells[x, y].candy = null;
+
+                ChangeScore(60);
             }
         }
         yield return new WaitForSeconds(0.1f);
@@ -495,8 +535,15 @@ public class GirdCandy : MonoBehaviour
         {
             if (cells[x, y].candy != null)
             {
+                if (cells[x, y].candy.SpecialType == CandySpecialType.StripedHorizontal)
+                {
+                    StartCoroutine(ActivateSpecialAt(cells[x, y]));
+                    continue;
+                }
                 PoolingManager.Despawn(cells[x, y].candy.gameObject);
                 cells[x, y].candy = null;
+
+                ChangeScore(60);
             }
         }
         yield return new WaitForSeconds(0.1f);
@@ -514,6 +561,8 @@ public class GirdCandy : MonoBehaviour
                 {
                     PoolingManager.Despawn(cells[x, y].candy.gameObject);
                     cells[x, y].candy = null;
+
+                    ChangeScore(60);
                 }
             }
         yield return new WaitForSeconds(0.1f);
@@ -524,10 +573,12 @@ public class GirdCandy : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 var c = cells[x, y].candy;
-                if (c && c.Type == type)
+                if (c && c.Type == type && c.SpecialType == CandySpecialType.None)
                 {
                     PoolingManager.Despawn(c.gameObject);
                     cells[x, y].candy = null;
+
+                    ChangeScore(60);
                 }
             }
         yield return new WaitForSeconds(0.1f);
@@ -549,6 +600,32 @@ public class GirdCandy : MonoBehaviour
                     PoolingManager.Despawn(cells[x, y].gameObject);
                 }
             }
+        }
+    }
+
+    public void ChangeScore(int val)
+    {
+        score += val;
+        ObserverManager<TextID>.PostEven(TextID.ChangeScore, score);
+    }
+    public void ChangeMoveLeft(int val)
+    {
+        movesLeft += val;
+        ObserverManager<TextID>.PostEven(TextID.ChangeMoveLimit, movesLeft);
+    }
+    public void CheckMoveLimit()
+    {
+        if (score >= level.targetScore) 
+        {
+            gameObject.SetActive(false);
+            winUI.OnWin();
+            AudioController.Instance.PlayAudioGameWin();
+        }
+        else if(movesLeft <= 0)
+        {
+            gameObject.SetActive(false);
+            loseUI.OnLose();
+            AudioController.Instance.PlayAudioGameLose();
         }
     }
 }

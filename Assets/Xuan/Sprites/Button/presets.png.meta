@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8d4d9109c6bae0c4eaad20c6a21a5d7e
+guid: e83623afdb160ea4b95e05682ed80a81
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,64 +123,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: main_menu_hd_0
+      name: presets_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 712
-        width: 238
-        height: 239
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8469c278029f1344b95f5fa28201b4d8
-      internalID: 1350175103
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: main_menu_hd_1
-      rect:
-        serializedVersion: 2
-        x: 1414
-        y: 209
-        width: 172
-        height: 173
+        x: 3
+        y: 121
+        width: 120
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 17, y: 21, z: 18, w: 19}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e0c02f073646e62469329fca630d3a40
-      internalID: 687430829
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: main_menu_hd_2
-      rect:
-        serializedVersion: 2
-        x: 970
-        y: 998
-        width: 143
-        height: 153
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 792902f7bfb8f014596dafa33cb8793b
-      internalID: 742450434
+      spriteID: a1af0d7aae6ebd5408defe774d74848b
+      internalID: 256771372
       vertices: []
       indices: 
       edges: []
@@ -196,9 +154,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      main_menu_hd_0: 1350175103
-      main_menu_hd_1: 687430829
-      main_menu_hd_2: 742450434
+      presets_0: 256771372
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

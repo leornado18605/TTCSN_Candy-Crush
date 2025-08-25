@@ -5,14 +5,13 @@ using UnityEngine;
 public class InputController : MonoBehaviour
 {
     public Camera cam;
-    public GirdCandy board;
 
     private Cell selected;
     private Vector3 pressWorld;
 
     void Update()
     {
-        if (board == null || board.IsBusy) return;
+        if (GirdCandy.Instance.IsBusy) return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -28,10 +27,10 @@ public class InputController : MonoBehaviour
             if (delta.magnitude > 0.2f)
             {
                 GridPosition dir = AbsMaxDirection(delta);
-                var neighbor = board.GetType().GetMethod("GetCell", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(board, new object[] { selected.pos.x + dir.x, selected.pos.y + dir.y }) as Cell;
+                var neighbor = GirdCandy.Instance.GetType().GetMethod("GetCell", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(GirdCandy.Instance, new object[] { selected.pos.x + dir.x, selected.pos.y + dir.y }) as Cell;
                 if (neighbor != null)
                 {
-                    StartCoroutine(board.TrySwap(selected, neighbor));
+                    StartCoroutine(GirdCandy.Instance.TrySwap(selected, neighbor));
                 }
             }
             selected = null;

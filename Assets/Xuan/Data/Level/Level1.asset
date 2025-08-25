@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 5
   height: 5
-  moveLimit: 15
+  moveLimit: 5
   targetScore: 15000
   candies:
   - {fileID: 11400000, guid: 3c63fbddf7a520b4687c96de85bd8ea2, type: 2}
