@@ -26,12 +26,14 @@ public class WinUI : MonoBehaviour
     }
     public void OnNext()
     {
+        AudioController.Instance.PlaySoundButtonDown();
         winPanel.SetActive(false);
-        StartGame.Instance.NextLevel();
+        LevelController.Instance.NextLevel();
         AudioController.Instance.PlayAudioMenuGame();
     }
     public void OnBack()
     {
+        AudioController.Instance.PlaySoundButtonDown();
         winPanel.SetActive(false);
         AudioController.Instance.PlayAudioMenuGame();
     }

@@ -14,7 +14,4 @@ public class LevelData : ScriptableObject
     public int targetScore = 15000;
 
     [Header("Possible Candies")] public CandyData[] candies;
-
-    [Header("Blockers (Optional)")]
-    public TextAsset blockersCSV; 
 }

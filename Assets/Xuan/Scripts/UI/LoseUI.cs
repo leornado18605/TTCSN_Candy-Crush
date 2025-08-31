@@ -45,15 +45,17 @@ public class LoseUI : MonoBehaviour
     }
     public void Retry()
     {
+        AudioController.Instance.PlaySoundButtonDown();
         pannelLose.SetActive(false);
         message.SetActive(false);
         menuRetry.SetActive(false);
         AudioController.Instance.PlayAudioMenuGame();
-        StartGame.Instance.RetryLevel();
+        LevelController.Instance.RetryLevel();
     }
 
     public void Back()
     {
+        AudioController.Instance.PlaySoundButtonDown();
         message.SetActive(false);
         AudioController.Instance.PlayAudioMenuGame();
         menuRetry.transform.DOMove(menuRetry.transform.position + new Vector3(0, 10, 0), 0.5f).OnComplete(() =>

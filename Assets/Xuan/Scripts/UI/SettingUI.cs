@@ -19,20 +19,25 @@ public class SettingUI : MonoBehaviour
     {
         btnSetting.onClick.AddListener(delegate
         {
+            AudioController.Instance.PlaySoundButtonDown();
             OnSetting();
         });
         btnBack.onClick.AddListener(delegate
         {
+            AudioController.Instance.PlaySoundButtonDown();
             OnBack();
         });
         btnQuitLevel.onClick.AddListener(delegate
         {
+            AudioController.Instance.PlaySoundButtonDown();
             OnQuitLevel();
         });
     }
 
     public void OnSetting()
     {
+        if(GirdCandy.Instance.IsBusy) return;
+
         GirdCandy.Instance.IsBusy = true;
         pannelSetting.transform.position = pannelSetting.transform.position + new Vector3(0, 10, 0);
         pannelSetting.SetActive(true);

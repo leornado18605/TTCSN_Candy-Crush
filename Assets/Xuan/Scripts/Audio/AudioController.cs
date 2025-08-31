@@ -40,6 +40,9 @@ public class AudioController : Singleton<AudioController>
     [SerializeField] private AudioClip audioGameWin;
     [SerializeField] private AudioClip audioGameLose;
 
+    [SerializeField] private AudioClip buttonDown;
+    [SerializeField] private AudioClip buttonPress;
+
     private void Start()
     {
         btnMusic.onClick.AddListener(delegate
@@ -67,6 +70,7 @@ public class AudioController : Singleton<AudioController>
         textMusic.text = ((int)(val*100)).ToString() + " %";
         sliderMusic.value = val;
         audioMusic.volume = val;
+        PlaySoundButtonPress();
 
         if (val == 0)
         {
@@ -87,6 +91,7 @@ public class AudioController : Singleton<AudioController>
         textSound.text = ((int)(val * 100)).ToString() + " %";
         sliderSound.value = val;
         audioSound.volume = val;
+        PlaySoundButtonPress();
 
         if(val == 0)
         {
@@ -106,7 +111,8 @@ public class AudioController : Singleton<AudioController>
     //Button
     public void OnClickButtonMusic()
     {
-        if(isClickMusic)
+        PlaySoundButtonDown();
+        if (isClickMusic)
         {
             isClickMusic = false;
             UpdateMusic(1f);
@@ -119,6 +125,7 @@ public class AudioController : Singleton<AudioController>
     }
     public void OnClickButtonSound()
     {
+        PlaySoundButtonDown();
         if (isClickSound)
         {
             isClickSound = false;
@@ -133,7 +140,8 @@ public class AudioController : Singleton<AudioController>
     }
     public void OnClickRung()
     {
-        if(isClickRung)
+        PlaySoundButtonDown();
+        if (isClickRung)
         {
             isClickRung = false;
             imgRung.gameObject.SetActive(false);
@@ -175,5 +183,14 @@ public class AudioController : Singleton<AudioController>
     public void PlaySound(AudioClip clip)
     {
         audioSound.PlayOneShot(clip);
+    }
+
+    public void PlaySoundButtonDown()
+    {
+        PlaySound(buttonDown);
+    }
+    public void PlaySoundButtonPress()
+    {
+        PlaySound(buttonPress);
     }
 }

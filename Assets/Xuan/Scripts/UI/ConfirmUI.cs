@@ -23,6 +23,7 @@ public class ConfirmUI : MonoBehaviour
     {
         btnBack.onClick.AddListener(delegate
         {
+            AudioController.Instance.PlaySoundButtonDown();
             SetOn(false);
         });
     }
