@@ -899,6 +899,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: liveops_37
+      rect:
+        serializedVersion: 2
+        x: 456
+        y: 943
+        width: 61
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98f7a8c76a316e34192207ae53898e2b
+      internalID: -386724261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -941,6 +962,7 @@ TextureImporter:
       liveops_34: -1346758224
       liveops_35: -1310237341
       liveops_36: -512456469
+      liveops_37: -386724261
       liveops_4: -248194131
       liveops_5: -1928486346
       liveops_6: -413834401
