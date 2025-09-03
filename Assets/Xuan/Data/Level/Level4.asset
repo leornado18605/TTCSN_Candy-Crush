@@ -15,9 +15,8 @@ MonoBehaviour:
   width: 9
   height: 5
   moveLimit: 25
-  targetScore: 15000
+  targetScore: 10000
   candies:
   - {fileID: 11400000, guid: bd18ae3a65239d144957da370d48e2b1, type: 2}
   - {fileID: 11400000, guid: dca3bf1d976bc7c4e8d63c8697278b02, type: 2}
   - {fileID: 11400000, guid: 3c63fbddf7a520b4687c96de85bd8ea2, type: 2}
-  blockersCSV: {fileID: 0}

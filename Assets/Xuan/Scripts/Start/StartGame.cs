@@ -11,19 +11,28 @@ public class StartGame : MonoBehaviour
     [SerializeField] private Button btnQuit;
     [SerializeField] private Button btnSetting;
 
+    [SerializeField] private GameObject settingPanel;
+
     private void Start()
     {
+        StartSetting.Instance.PlayMusic();
+
         btnPlay.onClick.AddListener(() =>
         {
+            StartSetting.Instance.PlaySoundButtonDown();
+            StartSetting.Instance.StopMusic();
             SceneManager.LoadScene("Xuan");
         });
         btnQuit.onClick.AddListener(() =>
         {
+            StartSetting.Instance.PlaySoundButtonDown();
+            StartSetting.Instance.StopMusic();
             Application.Quit();
         });
         btnSetting.onClick.AddListener(() =>
         {
-            
+            StartSetting.Instance.PlaySoundButtonDown();
+            settingPanel.SetActive(true);
         });
     }
 }

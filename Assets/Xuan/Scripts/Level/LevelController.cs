@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class LevelController : Singleton<LevelController>
 {
-    [SerializeField] private List<Button> btnList;
+    [SerializeField] private List<ButtonLevel> btnList;
     [SerializeField] private Button btnPlay;
     [SerializeField] private List<LevelData> levelDatas;
     private LevelData currentLevel;
@@ -15,6 +15,7 @@ public class LevelController : Singleton<LevelController>
     [SerializeField] private GameObject pannelLoading;
     [SerializeField] private ConfirmUI confirmPlay;
     private int unlockedLevel;
+    [SerializeField] private LevelCurrentEffect levelCurrentEffect;
     private void Start()
     {
         AudioController.Instance.PlayAudioMenuGame();
@@ -26,14 +27,16 @@ public class LevelController : Singleton<LevelController>
 
             if (level <= unlockedLevel)
             {
-                btnList[i].interactable = true; // cho bấm
+                btnList[i].Btn.onClick.AddListener(() => LoadLevel(level));
+                if (level < unlockedLevel)
+                {
+                    btnList[i].WinGame();
+                }
+                if (level == unlockedLevel)
+                {
+                    levelCurrentEffect.SetPos(btnList[i].transform.localPosition);
+                }
             }
-            else
-            {
-                btnList[i].interactable = false; // khóa lại
-            }
-
-            btnList[i].onClick.AddListener(() => LoadLevel(level));
         }
 
         btnPlay.onClick.AddListener(delegate
@@ -74,6 +77,11 @@ public class LevelController : Singleton<LevelController>
     public void NextLevel()
     {
         currentLevelIndex++;
+        if(currentLevelIndex > levelDatas.Count)
+        {
+            currentLevelIndex = levelDatas.Count;
+            return;
+        }
         UnlockNextLevel(currentLevelIndex - 1);
         if (currentLevelIndex > levelDatas.Count)
         {
@@ -86,11 +94,13 @@ public class LevelController : Singleton<LevelController>
     }
     public void UnlockNextLevel(int currentLevel)
     {
+        btnList[currentLevel - 1].WinGame();
         int nextLevel = currentLevel + 1;
 
         if (nextLevel > PlayerPrefs.GetInt("LevelUnlocked", 1))
         {
-            btnList[nextLevel - 1].interactable = true;
+            btnList[nextLevel - 1].Btn.onClick.AddListener(() => LoadLevel(nextLevel - 1));
+            levelCurrentEffect.SetPos(btnList[nextLevel - 1].transform.localPosition);
             PlayerPrefs.SetInt("LevelUnlocked", nextLevel);
             PlayerPrefs.Save();
         }
