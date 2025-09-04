@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72d01d2199cb034590a33163e2fd968, type: 3}
   m_Name: Level15
   m_EditorClassIdentifier: 
-  width: 9
-  height: 5
+  width: 7
+  height: 7
   moveLimit: 15
   targetScore: 7500
   candies:

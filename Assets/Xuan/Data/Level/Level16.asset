@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72d01d2199cb034590a33163e2fd968, type: 3}
   m_Name: Level16
   m_EditorClassIdentifier: 
-  width: 9
+  width: 7
   height: 5
   moveLimit: 12
   targetScore: 3500

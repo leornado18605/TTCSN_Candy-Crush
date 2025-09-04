@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level11
   m_EditorClassIdentifier: 
   width: 9
-  height: 5
+  height: 7
   moveLimit: 12
   targetScore: 3000
   candies:
